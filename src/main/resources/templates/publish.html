@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>learn</title>
+    <title>发布  -  learn</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <script src="js/bootstrap.js" type="application/javascript"></script>
@@ -40,5 +40,34 @@
         </div>
     </div>
 </nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h2>
+            <hr>
+            <form action="">
+                <div class="form-group">
+                    <label for="title">问题标题（简单扼要）：</label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题.....">
+                </div>
+                <div class="form-group">
+                    <label for="title">问题补充（必填）：</label>
+                    <textarea class="form-control" cols="30" rows="10" name="description" id="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tag">添加标签：</label>
+                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签，以逗号分隔">
+                </div>
+                <button type="submit" class="btn btn-success">发布</button>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发起指南</h3>
+            ·问题标题：....
+            ·问题补充：....
+            ·选择标签：....
+        </div>
+    </div>
+</div>
 </body>
 </html>
