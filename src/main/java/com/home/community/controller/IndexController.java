@@ -23,12 +23,14 @@ public class IndexController {
     public String index(HttpServletRequest request){
         //解决服务重启用户登录失效
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie: cookies) {
-            if (cookie.getName().equals("token")){
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if (user != null){
-                    request.getSession().setAttribute("user",user);
+        if(cookies != null && cookies.length != 0){
+            for (Cookie cookie: cookies) {
+                if (cookie.getName().equals("token")){
+                    String token = cookie.getValue();
+                    User user = userMapper.findByToken(token);
+                    if (user != null){
+                        request.getSession().setAttribute("user",user);
+                    }
                 }
             }
         }
