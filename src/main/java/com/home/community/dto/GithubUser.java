@@ -13,5 +13,5 @@ public class GithubUser {
     private String name;
     //描述
     private String bio;
-    private String avatar_url;
+    private String avatarUrl;
 }
