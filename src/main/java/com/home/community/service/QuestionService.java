@@ -26,10 +26,22 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
     public PageDTO searchAll(Integer page, Integer size) {
+        PageDTO pageDTO = new PageDTO();
+        //问题总数
+        Integer count = questionMapper.getCount();
+        pageDTO.setPageDTO(count,page,size);
+        if (page < 1){
+            page = 1;
+        }
+
+        if (page > pageDTO.getTotalPage()){
+            page = pageDTO.getTotalPage();
+        }
+
         Integer offset = size * (page - 1);
         List<Question> questionList = questionMapper.searchAll(offset,size);
         List<QuestionDTO> questionDTOList = new ArrayList<>(questionList.size());
-        PageDTO pageDTO = new PageDTO();
+
         for (Question question:questionList) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -37,9 +49,34 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
+        pageDTO.setQuestions(questionDTOList);
+        return pageDTO;
+    }
+
+    public void searchByUserId(Integer userId, Integer page, Integer size) {
+        PageDTO pageDTO = new PageDTO();
         //问题总数
         Integer count = questionMapper.getCount();
-        pageDTO.getPageDTO(count,page,size);
-        return pageDTO;
+        pageDTO.setPageDTO(count,page,size);
+        if (page < 1){
+            page = 1;
+        }
+
+        if (page > pageDTO.getTotalPage()){
+            page = pageDTO.getTotalPage();
+        }
+
+        Integer offset = size * (page - 1);
+        List<Question> questionList = questionMapper.searchByUserId(userId,offset,size);
+        List<QuestionDTO> questionDTOList = new ArrayList<>(questionList.size());
+
+        for (Question question:questionList) {
+            User user = userMapper.findById(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question,questionDTO);
+            questionDTO.setUser(user);
+            questionDTOList.add(questionDTO);
+        }
+        pageDTO.setQuestions(questionDTOList);
     }
 }
