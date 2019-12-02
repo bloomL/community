@@ -53,10 +53,10 @@ public class QuestionService {
         return pageDTO;
     }
 
-    public void searchByUserId(Integer userId, Integer page, Integer size) {
+    public PageDTO searchByUserId(Integer userId, Integer page, Integer size) {
         PageDTO pageDTO = new PageDTO();
         //问题总数
-        Integer count = questionMapper.getCount();
+        Integer count = questionMapper.getCountById(userId);
         pageDTO.setPageDTO(count,page,size);
         if (page < 1){
             page = 1;
@@ -78,5 +78,15 @@ public class QuestionService {
             questionDTOList.add(questionDTO);
         }
         pageDTO.setQuestions(questionDTOList);
+        return pageDTO;
+    }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        User user = userMapper.findById(question.getCreator());
+        BeanUtils.copyProperties(question,questionDTO);
+        questionDTO.setUser(user);
+        return questionDTO;
     }
 }

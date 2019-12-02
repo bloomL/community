@@ -1,10 +1,7 @@
 package com.home.community.mapper;
 
 import com.home.community.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @Description TODO
@@ -21,4 +18,7 @@ public interface UserMapper {
 
     @Select("select * from user where id=#{id}")
     User findById(@Param("id") Integer id);
+
+    @Update("update user set name=#{name},token=#{token}, gmt_modified=#{gmtModified},avatar_rl=#{avatarUrl} where id = #{id} ")
+    void update(User dbUser);
 }
