@@ -89,4 +89,21 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void createOrModify(Question question) {
+        if (question.getId() == null){
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.create(question);
+        }else {
+            question.setGmtModified(question.getGmtCreate());
+            questionMapper.update(question);
+        }
+    }
+
+    public void incrementView(Integer id) {
+        Question question = questionMapper.getById(id);
+        question.setViewCount(question.getViewCount() + 1);
+        questionMapper.updateViewCount(question);
+    }
 }

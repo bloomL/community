@@ -24,6 +24,8 @@ public class QuestionController {
     public String question(@PathVariable(name = "id") Integer id,
                            Model model){
         QuestionDTO questionDTO = questionService.getById(id);
+        //增加浏览量  考虑多线程的问题
+        questionService.incrementView(id);
         model.addAttribute("question",questionDTO);
         return "question";
     }
