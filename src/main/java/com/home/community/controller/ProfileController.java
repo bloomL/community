@@ -2,6 +2,7 @@ package com.home.community.controller;
 
 import com.home.community.dto.PageDTO;
 import com.home.community.entity.User;
+import com.home.community.service.NotificationService;
 import com.home.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,28 +24,32 @@ public class ProfileController {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           HttpServletRequest request,
                           Model model,
                           @RequestParam(name = "page",defaultValue = "1") Integer page,
-                          @RequestParam(name = "size",defaultValue = "1") Integer size){
+                          @RequestParam(name = "size",defaultValue = "5") Integer size){
 
         User user = (User) request.getSession().getAttribute("user");
-        if (user == null){
+        if (user == null) {
             return "redirect:/";
         }
 
-        if ("questions".equals(action)){
-            model.addAttribute("section","questions");
-            model.addAttribute("sectionName","我的提问");
-        }else if ("replies".equals(action)){
-            model.addAttribute("section","replies");
-            model.addAttribute("sectionName","最新回复");
+        if ("questions".equals(action)) {
+            model.addAttribute("section", "questions");
+            model.addAttribute("sectionName", "我的提问");
+            PageDTO pageDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", pageDTO);
+        } else if ("replies".equals(action)) {
+            PageDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            model.addAttribute("section", "replies");
+            model.addAttribute("pagination", paginationDTO);
+            model.addAttribute("sectionName", "最新回复");
         }
-
-        PageDTO pageDTO = questionService.searchByUserId(user.getId(), page, size);
-        model.addAttribute("pageDTO",pageDTO);
         return "profile";
     }
 }
